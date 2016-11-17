@@ -1,33 +1,80 @@
 package iot;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLEncoder;
 public class Server {
 
 	public static void insertThermostatData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
-		ServerSocket listener = new ServerSocket(port);
-		listener.setReuseAddress(true);
+	
+		//ServerSocket listener = new ServerSocket(port);
+		//listener.setReuseAddress(true);
 
 		try {
+			
 			ManageDB.tempModeUp = ThermostatUpstair.getMode();
 			ManageDB.tempModeMain = Thermostat.getMode();
 			ManageDB.tempEnergyUp = Integer.toString(ThermostatUpstair.getEnergyConsumed()) ;
 			ManageDB.tempEnergyMain = Integer.toString(Thermostat.getEnergyConsumed()) ;
 			ManageDB.currentTempUp =Integer.toString(ThermostatUpstair.getCurrentTemperature());
 			ManageDB.currentTempMain = Integer.toString(Thermostat.getCurrentTemperature());
-			System.out.println("energy up"+ManageDB.tempEnergyUp);
-			System.out.println("energy main"+ManageDB.tempEnergyMain);
+			String url = "http://"+ManageDB.ip+"/insertThermostat.php";
+			URL urlObj = new URL(url);
+			String result = "";
+			
+			String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
+			String data1 = " "  +URLEncoder.encode(time, "UTF-8");
+			String data2 =  " "+URLEncoder.encode(ManageDB.tempModeUp, "UTF-8");
+			String data3 =  " "+URLEncoder.encode(ManageDB.tempModeMain, "UTF-8");
+			String data4 =  " "+URLEncoder.encode(ManageDB.tempEnergyUp, "UTF-8");
+			String data5 =  " "+URLEncoder.encode(ManageDB.tempEnergyMain, "UTF-8");
+			String data6 =  " "+URLEncoder.encode(ManageDB.currentTempUp, "UTF-8");
+			String data7 = " "+URLEncoder.encode(ManageDB.currentTempMain, "UTF-8");
+			String data8 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempMainFloor), "UTF-8");
+			String data9 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempUpstair), "UTF-8");
+			
+		
+			
+			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("POST");
+			
+			DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
+			dataOut.writeBytes(data);
+			dataOut.writeBytes(data1);
+			dataOut.writeBytes(data2);
+			dataOut.writeBytes(data3);
+			dataOut.writeBytes(data4);
+			dataOut.writeBytes(data5);
+			dataOut.writeBytes(data6);
+			dataOut.writeBytes(data7);
+			dataOut.writeBytes(data8);
+			dataOut.writeBytes(data9);
+			
+			dataOut.flush();
+			dataOut.close();
+			DataInputStream in = new DataInputStream(conn.getInputStream());
+			String g;
+			while((g = in.readLine()) != null){
+				result += g;
+			}
+			in.close();
+			System.out.println(result);
+			//
+			
+		//	System.out.println("energy up"+ManageDB.tempEnergyUp);
+		//	System.out.println("energy main"+ManageDB.tempEnergyMain);
 
-			while (true) {
+/*			while (true) {
 				Socket socket = listener.accept();
 
 
@@ -38,13 +85,14 @@ public class Server {
 				PrintWriter out =
 						new PrintWriter(socket.getOutputStream(), true);
 				out.println(value);
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 				out.flush();
 				out.close();
 				socket.close();
 				listener.close();
 
 			}
+			*/
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -56,41 +104,23 @@ public class Server {
 	public static void insertLightData(int port, String time) throws Exception {
 		LightMainFloor lightMainFloor = new LightMainFloor();
 		LightUpstair lightUpStair = new LightUpstair();
-		try{
-
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+		
 		if(ManageDB.lightModeMainFloor.equalsIgnoreCase("on")){
 
 			ManageDB.energy_consumed_MF = lightMainFloor.EnergyConsumption();
-			//	System.out.println("\nLight Status on Main Floor:" + lightMainFloor.getLightStatus());
-			//	System.out.println("\nMain Floor energy consumption of light:" + ManageDB.energy_consumed_MF);
+		
 		}else{
-			//	System.out.println("\nLight Status on Main Floor:" + lightMainFloor.getLightStatus());
-			//	System.out.println("\nMain Floor energy consumption of light: 0");
+			
 		}
 
 
 		if(ManageDB.lightModeUpStair.equalsIgnoreCase("on")){
 			ManageDB.energy_consumed_US = lightUpStair.EnergyConsumption();
-			//	System.out.println("\nLight Status on Up Stair:" + lightUpStair.getLightStatus());
-			//	System.out.println("\nUp Stair energy consumption of light:" + ManageDB.energy_consumed_US);
+			
 		}else{
-			//	System.out.println("\nLight Status on Up Stair:" + lightMainFloor.getLightStatus());
-			//	System.out.println("\nUp Stair energy consumption of light: 0");
+			
 		}
-		System.out.println("inside light data:-"+ManageDB.cId);
-		System.out.println("inside light data:-"+time);
-		System.out.println("inside light data:-"+ManageDB.lightModeUpStair);
-		System.out.println("inside light data:-"+ManageDB.lightModeMainFloor);
-		System.out.println("inside light data:-"+Integer.toString(ManageDB.energy_consumed_US));
-		System.out.println("inside light data:-"+Integer.toString(ManageDB.energy_consumed_MF));
-		System.out.println("inside light data:-"+Integer.toString( ManageDB.brightnessUpStair));
-		System.out.println("inside light data:-"+Integer.toString(ManageDB.brightnessMainFloor));
-
+		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -105,7 +135,7 @@ public class Server {
 				PrintWriter out =
 						new PrintWriter(socket.getOutputStream(), true);
 				out.println(value);
-				Thread.sleep(1000);
+		//		Thread.sleep(1000);
 				out.flush();
 				out.close();
 				socket.close();
@@ -120,12 +150,7 @@ public class Server {
 	}
 
 	public static void insertSecData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -139,7 +164,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+			//		Thread.sleep(1000);
 					out.flush();
 					out.close();
 
@@ -158,12 +183,7 @@ public class Server {
 	}
 
 	public static void insertLockData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -178,7 +198,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+				//	Thread.sleep(1000);
 					out.flush();
 					out.close();
 
@@ -197,12 +217,7 @@ public class Server {
 	}
 
 	public static void insertDoorData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -216,7 +231,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+				//	Thread.sleep(1000);
 					out.flush();
 					out.close();
 
@@ -234,12 +249,7 @@ public class Server {
 
 	}
 	public static void insertMotionSensorData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -253,7 +263,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+				//	Thread.sleep(1000);
 					out.flush();
 					out.close();
 
@@ -271,12 +281,7 @@ public class Server {
 
 	}
 	public static void insertWeatherData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -290,7 +295,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+			//		Thread.sleep(1000);
 					out.flush();
 					out.close();
 
@@ -312,12 +317,7 @@ public class Server {
 
 
 	public static void insertGarageDoorData(int port, String time) throws Exception {
-		try{
-			Thread.sleep(5000);
-		}
-		catch (Exception e) {
-			//			// TODO: handle exception
-		}
+	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
@@ -331,7 +331,7 @@ public class Server {
 					PrintWriter out =
 							new PrintWriter(socket.getOutputStream(), true);
 					out.println(value);
-					Thread.sleep(1000);
+		//			Thread.sleep(1000);
 					out.flush();
 					out.close();
 

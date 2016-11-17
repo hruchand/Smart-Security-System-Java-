@@ -12,15 +12,15 @@ static	String str = null;
 	
 		String ServerIP = ManageDB.ip;
 		int ServerPort = port;		   	
-	System.out.println("port number"+port);
+//	System.out.println("port number"+port);
 		BufferedReader in = null;
 		PrintWriter out = null;
 		try{
 			Thread.sleep(1000);
-			System.out.println("before connecting");
-			System.out.println("ip is:-"+ServerIP);
+		//	System.out.println("before connecting");
+		//	System.out.println("ip is:-"+ServerIP);
 			Socket clientSocket = new Socket(ServerIP,ServerPort);
-			System.out.println("socket created"+clientSocket.getLocalPort());
+		//	System.out.println("socket created"+clientSocket.getLocalPort());
 
 			in = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));
@@ -28,7 +28,7 @@ static	String str = null;
 			while(true)
 			{
 				if(str.equalsIgnoreCase("null")){
-					System.out.println("hello");
+				//	System.out.println("hello");
 				}
 				else{
 					break;
@@ -43,7 +43,7 @@ static	String str = null;
 			//e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		System.out.println("str is");
+//		System.out.println("str is");
 	return str;
 	}
 }

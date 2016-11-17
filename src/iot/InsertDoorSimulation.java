@@ -13,7 +13,7 @@ public class InsertDoorSimulation implements Runnable{
 		{
 			
 		try{
-			Thread.sleep(5000); 
+			Thread.sleep(10000); 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());

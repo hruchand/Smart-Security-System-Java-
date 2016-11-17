@@ -11,7 +11,7 @@ static	String str="null";
 		String [] numbersArray;
 		
 		try {
-			System.out.println("inside the fetch cur temp");
+		//	System.out.println("inside the fetch cur temp");
 	
 		
 returnedValue = Client.fetchValues(3001);
@@ -21,9 +21,11 @@ returnedValue = Client.fetchValues(3001);
 //	 System.out.println("second val"+numbersArray[1]);
 	  ManageDB.curTempMain = numbersArray[1];
       ManageDB.curTempUp = numbersArray[0];
-    
- 
-
+      ManageDB.tempModeUp = numbersArray[2];
+      ManageDB.tempModeMain = numbersArray[3];
+    //  System.out.println("Index 3 "+ManageDB.tempModeMain);
+      
+      
 	
 
 
@@ -79,6 +81,7 @@ returnedValue = Client.fetchValues(3001);
 
         	String returnedValue = Client.fetchValues(3002);
         	String [] numbersArray = returnedValue.split(" ");
+        	
         	//String [] numbersArray = returnedValue.split(" ");
       //  	System.out.println("first  brighness val"+numbersArray[0]);
       //  	System.out.println("second brightness val"+numbersArray[1]);
@@ -120,7 +123,7 @@ returnedValue = Client.fetchValues(3001);
            //ManageDB.lightModeMainFloor        = numbersArray[1];
 LightUpstair.setLightStatus(numbersArray[2])  ;
 LightMainFloor.setLightStatus(numbersArray[3]);
-
+//System.out.println("Inside Fetch Light , light status"+LightMainFloor.getLightStatus());
         } catch (Exception e) {
 
         }
@@ -176,8 +179,8 @@ LightMainFloor.setLightStatus(numbersArray[3]);
         	String returnedValue = Client.fetchValues(3006);
         	String [] numbersArray = returnedValue.split(" ");
       
-      MotionDetectorUp.setMotion_detector_status(numbersArray[0]);
-     MotionDetectorMain.setMotion_detector_status(numbersArray[1]);
+      MotionDetectorUp.setMotion_detector_status(numbersArray[1]);
+     MotionDetectorMain.setMotion_detector_status(numbersArray[0]);
         	
         } catch (Exception e) {
           e.printStackTrace();
@@ -201,8 +204,9 @@ LightMainFloor.setLightStatus(numbersArray[3]);
 
         	String returnedValue = Client.fetchValues(3008);
         	String [] numbersArray = returnedValue.split(" ");
-      ManageDB.twoDoorStatus = numbersArray[0];
-     ManageDB.oneDoorStatus = numbersArray[1];  	
+            ManageDB.twoDoorStatus = numbersArray[0];
+            ManageDB.oneDoorStatus = numbersArray[1]; 
+     
         } catch (Exception e) {
           e.printStackTrace();
         }

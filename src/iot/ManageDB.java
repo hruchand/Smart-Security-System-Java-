@@ -36,10 +36,9 @@ import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-//import com.sun.jna.platform.win32.SetupApi;
 
 public class ManageDB {
-	static String ip="192.168.1.3";
+	static String ip="10.0.0.3";
 	static	String url222 = "http://"+ip+"/iot.php";
 
 	static	String cId ="1";
@@ -70,38 +69,18 @@ public class ManageDB {
 	static String curTempMain;
 	static String twoDoorStatus;
 	static String oneDoorStatus;
+	static String thermoStatModeMainFloor;
+	static String fanModeMainFloor;
+	static String thermoStatModeUpstair;
+	static String fanModeUpstair;
 
 	static int brightnessUpStair;
-	
-//	try{
-//		Test.check();
-//	}
-//	catch (Exception e) {
-//		System.out.println(e.getMessage());
-//	}
-//	}
-//
-//	public static void demo() {
+
 	public static void main(String args[]){
 		try{
-			String thermoStatModeMainFloor;
-			String fanModeMainFloor;
-			String thermoStatModeUpstair;
-			String fanModeUpstair;
-
-		//	FetchData.fetchCurTemp();
-			FetchData.fetchlightData();
-		//	FetchData.fetchSecurityData();
-			FetchData.fetchLockData();
-		//	FetchData.fetchDoorSensorData();
-			FetchData.fetchMotionSensorData();
-		//	FetchData.fetchWeatherData();
-		//	FetchData.fetchGarageDoorStatus();
-System.out.println("light status"+LightMainFloor.getLightStatus());
-System.out.println("lock status"+Locks.getFront_door_status());
-System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_status());
-				EventTriggerPi eventTriggerPi = new EventTriggerPi();
-				
+			
+System.out.println("hello");
+	//		EventTriggerPi eventTriggerPi = new EventTriggerPi();
 
 			System.out.println("Set  Control Temp for MainFloor(int)\n");	
 			while(true)
@@ -168,7 +147,16 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 					break;
 				}
 			}
+			Thermostat thermostat = new Thermostat(controlTempMainFloor, thermoStatModeMainFloor);
+			SimulationThreadThermostat simulationThreadThermostat = new SimulationThreadThermostat();
+			String fanStatusMainfloor = thermostat.fan(fanModeMainFloor);
 
+			ThermostatUpstair thermostatUpstair = new ThermostatUpstair(controlTempUpstair, thermoStatModeUpstair);
+			SimulationThreadThermostatUpstair simulationThreadThermostatUpstair = new SimulationThreadThermostatUpstair();
+			String fanStatusUpstair = thermostatUpstair.fan(fanModeUpstair);
+
+			InsertThermostatSimulation insertThermostatSimulation = new InsertThermostatSimulation();
+/*
 
 			System.out.println("Set Light Mode for Main Floor(on/off)");
 			while(true)
@@ -214,6 +202,10 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 				}
 			}
 
+			LightMainFloor lightMainFloor = new LightMainFloor(lightModeMainFloor,brightnessMainFloor);
+			LightUpstair lightUpStair = new LightUpstair(lightModeUpStair,brightnessUpStair);
+			InsertLightSimulation insertLightSimulation = new InsertLightSimulation();
+
 			System.out.println("Set Security System status(Disarmed/Armed_Stay/Armed_Away)");
 			while(true)
 			{
@@ -224,6 +216,10 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 					break;
 				}
 			}
+
+			SecuritySystem ss = new SecuritySystem();
+			ss.setSecurity_status(security_system);
+			InsertSecSimulation insertSecSimulation = new InsertSecSimulation();
 
 			System.out.println("Lock the front door(Locked/Unlocked)");
 			while(true)
@@ -258,27 +254,11 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 				}
 			}
 
-			System.out.println("Enter the Door window sensor status for main: (on/off)");
-			while(true)
-			{
-				Scanner scanner = new Scanner(System.in);
-				if(scanner.hasNext())
-				{
-					door_window_sensor_main = scanner.nextLine();
-					break;
-				}
-			}
-
-			System.out.println("Enter the Door window sensor status for upstair: (on/off)");
-			while(true)
-			{
-				Scanner scanner = new Scanner(System.in);
-				if(scanner.hasNext())
-				{
-					door_window_sensor_up = scanner.nextLine();
-					break;
-				}
-			}
+			Locks l = new Locks();
+			l.setBack_door_status(b_door_status);
+			l.setFront_door_status(f_door_status);
+			l.setGarage_door_status(g_door_status);
+			InsertLockSimulation insertLockSimulation = new InsertLockSimulation();
 
 			System.out.println("Enter the Door window sensor status for main: (on/off)");
 			while(true)
@@ -301,6 +281,12 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 					break;
 				}
 			}
+			Door_Window_SensorsMain dwm = new Door_Window_SensorsMain();
+			dwm.setSensor_status(door_window_sensor_main);
+
+			Door_Window_SensorsUp dwu = new Door_Window_SensorsUp();
+			dwu.setSensor_status(door_window_sensor_up);
+			InsertDoorSimulation insertDoorSimulation = new InsertDoorSimulation();
 
 			System.out.println("Enter the Two Door GarageStatus: (Locked/Unlocked)");
 			while(true)
@@ -313,7 +299,7 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 				}
 			}
 
-			System.out.println("Enter the Two Door GarageStatus: (Locked/Unlocked)");
+			System.out.println("Enter the one Door GarageStatus: (Locked/Unlocked)");
 			while(true)
 			{
 				Scanner scanner = new Scanner(System.in);
@@ -323,73 +309,46 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 					break;
 				}
 			}
+			InsertGarageDoorSimulation insertGarageDoorSimulation = new InsertGarageDoorSimulation();
+
+			System.out.println("Enter the motion sensor main staus: (active/inactive)");
+			while(true)
+			{
+				Scanner scanner = new Scanner(System.in);
+				if(scanner.hasNext())
+				{
+					motion_sensor_main = scanner.nextLine();
+					break;
+				}
+			}
+
+			System.out.println("Enter the motion sensor up staus: (active/inactive)");
+			while(true)
+			{
+				Scanner scanner = new Scanner(System.in);
+				if(scanner.hasNext())
+				{
+					motion_sensor_up = scanner.nextLine();
+					break;
+				}
+			}
 
 
 			MotionDetectorUp mu = new MotionDetectorUp();
 			MotionDetectorMain mm = new MotionDetectorMain();
 			mu.setMotion_detector_status(motion_sensor_up);
 			mm.setMotion_detector_status(motion_sensor_main);
+			InsertMotionSensorSimulation insertMotionSensorSimulation = new InsertMotionSensorSimulation();
 
-			Door_Window_SensorsMain dwm = new Door_Window_SensorsMain();
-			dwm.setSensor_status(door_window_sensor_main);
-
-			Door_Window_SensorsUp dwu = new Door_Window_SensorsUp();
-			dwu.setSensor_status(door_window_sensor_up);
-
-			Thermostat thermostat = new Thermostat(controlTempMainFloor, thermoStatModeMainFloor);
-			SimulationThreadThermostat simulationThreadThermostat = new SimulationThreadThermostat();
-			String fanStatusMainfloor = thermostat.fan(fanModeMainFloor);
-
-			ThermostatUpstair thermostatUpstair = new ThermostatUpstair(controlTempUpstair, thermoStatModeUpstair);
-			SimulationThreadThermostatUpstair simulationThreadThermostatUpstair = new SimulationThreadThermostatUpstair();
-			String fanStatusUpstair = thermostatUpstair.fan(fanModeUpstair);
-
-			SecuritySystem ss = new SecuritySystem();
-			ss.setSecurity_status(security_system);
-			System.out.println("\nSecurity Status:" + ss.SecurityStatus());
-
-			LightMainFloor lightMainFloor = new LightMainFloor(lightModeMainFloor,brightnessMainFloor);
-			LightUpstair lightUpStair = new LightUpstair(lightModeUpStair,brightnessUpStair);
-
-			Locks l = new Locks();
-			l.setBack_door_status(b_door_status);
-			l.setFront_door_status(f_door_status);
-			l.setGarage_door_status(g_door_status);
-			//		System.out.println("Front door is:" + l.FrontDoorStatus());
-			//		System.out.println("Back door is:" + l.BackDoorStatus());
-			//		System.out.println("Garage door is:" + l.GarageDoorStatus());
-
+			//		InsertWeatherSimulation insertWeatherSimulation = new InsertWeatherSimulation();
+*/
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}	
 
-	//	System.out.println("above setupdata");
 		//	createTable();
 		try{
-		InsertThermostatSimulation insertThermostatSimulation = new InsertThermostatSimulation();
-		InsertLightSimulation insertLightSimulation = new InsertLightSimulation();
-		InsertSecSimulation insertSecSimulation = new InsertSecSimulation();
-		InsertLockSimulation insertLockSimulation = new InsertLockSimulation();
-		InsertDoorSimulation insertDoorSimulation = new InsertDoorSimulation();
-		InsertMotionSensorSimulation insertMotionSensorSimulation = new InsertMotionSensorSimulation();
-		InsertWeatherSimulation insertWeatherSimulation = new InsertWeatherSimulation();
-		InsertGarageDoorSimulation insertGarageDoorSimulation = new InsertGarageDoorSimulation();
-		/*	
-			for(;;)
-			{
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
-				Calendar cal = Calendar.getInstance();
-				String time = dateFormat.format(cal.getTime());	
-				Thread.sleep(5000); 
-				Server.insertThermostatData(4001, time);
-				Server.insertLightData(4002, time);
-				Server.insertSecData(4003, time);
-				Server.insertLockData(4004, time);
-				Server.insertDoorData(4005, time);
-				Server.insertMotionSensorData(4006, time);
-				Server.insertWeatherData(4007, time);
-			}
-*/
+
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -408,9 +367,6 @@ System.out.println("motion sensor status"+MotionDetectorMain.getMotion_detector_
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setRequestMethod("POST");
-			//DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
-			//dataOut.flush();
-			//dataOut.close();
 			DataInputStream in = new DataInputStream(conn.getInputStream());
 			String g;
 			while((g = in.readLine()) != null){

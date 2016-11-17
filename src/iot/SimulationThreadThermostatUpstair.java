@@ -15,15 +15,15 @@ Thread thread = new Thread(this);
 			}
             switch (ThermostatUpstair.getMode()) {
                 case "heat":
- System.out.println("Upstair temp:" +ThermostatUpstair.getCurrentTemperature());
- System.out.println("Upstair Control Temp:" +ThermostatUpstair.getControlTemperature());
+ //System.out.println("Upstair temp:" +ThermostatUpstair.getCurrentTemperature());
+ //System.out.println("Upstair Control Temp:" +ThermostatUpstair.getControlTemperature());
                 	Thread.sleep(10000);                    
                     if (ThermostatUpstair.getCurrentTemperature() < ThermostatUpstair.getControlTemperature() && ThermostatUpstair.getCurrentTemperature() < 80) {
                //         Thread.sleep(1000);
                         ThermostatUpstair.setCurrentTemperature(ThermostatUpstair.getCurrentTemperature()+1); 
-                        System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
+              //          System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
                    //     SetData.setThermDataup(5002);
-                        System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
+                //        System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
                     }
                     break;
 
@@ -32,9 +32,9 @@ Thread thread = new Thread(this);
                     if(ThermostatUpstair.getCurrentTemperature() > ThermostatUpstair.getControlTemperature() && ThermostatUpstair.getCurrentTemperature() > 45) {
                         Thread.sleep(10000);
                         ThermostatUpstair.setCurrentTemperature(ThermostatUpstair.getCurrentTemperature()-1);
-                        System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
+      //                  System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
                    //     SetData.setThermDataup(5002);
-                        System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
+        //                System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
                         }
                 break;
                 default:

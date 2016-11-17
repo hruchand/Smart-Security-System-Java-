@@ -13,22 +13,22 @@ public class SimulationThreadThermostat implements Runnable {
 				if(Thermostat.getMode().equalsIgnoreCase("off") || Thermostat.getCurrentTemperature() == Thermostat.getControlTemperature()){
 					break;
 				}
-				System.out.println("inside thermostata simulation main");
-				System.out.println("thermostat mode:-"+Thermostat.getMode());
+			//	System.out.println("inside thermostata simulation main");
+			//	System.out.println("thermostat mode:-"+Thermostat.getMode());
 				switch (Thermostat.getMode()) {
 				case "heat":
 					Thread.sleep(10000);
 
 					if (Thermostat.getCurrentTemperature() < Thermostat.getControlTemperature() && Thermostat.getCurrentTemperature() < 80) {
-						System.out.println("inside if of main thermostat");
+				//		System.out.println("inside if of main thermostat");
 						Thread.sleep(1000);
 						Thermostat.setCurrentTemperature(Thermostat.getCurrentTemperature()+1);
-						System.out.println("\nCurrent Temperature of Main Floor:"+Thermostat.getCurrentTemperature());
-						System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));
+				//		System.out.println("\nCurrent Temperature of Main Floor:"+Thermostat.getCurrentTemperature());
+				//		System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));
 					}
 					else
 					{
-						System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));	
+			//			System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));	
 					}
 					break;
 
@@ -36,12 +36,12 @@ public class SimulationThreadThermostat implements Runnable {
 					if(Thermostat.getCurrentTemperature() > Thermostat.getControlTemperature() && Thermostat.getCurrentTemperature() > 45) {
 						Thread.sleep(10000);
 						Thermostat.setCurrentTemperature(Thermostat.getCurrentTemperature()-1);
-						System.out.println("\nCurrent Temperature of Main Floor:"+Thermostat.getCurrentTemperature());
-						System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));
+			//			System.out.println("\nCurrent Temperature of Main Floor:"+Thermostat.getCurrentTemperature());
+			//			System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));
 					}
 					else
 					{
-						System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));	
+			//			System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));	
 					}
 					break;
 

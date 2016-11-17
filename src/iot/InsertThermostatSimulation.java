@@ -13,6 +13,7 @@ public class InsertThermostatSimulation implements Runnable{
 		{
 			
 		try{
+			
 			Thread.sleep(5000); 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();

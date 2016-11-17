@@ -9,56 +9,13 @@ public class InsertData {
 	public static void insertLightData(){
 		try
 		{
-		//	String insertVal =	Server.insertLightData(4002);	
-//System.out.println("light");
-//String url = "http://"+ManageDB.ip+"/insertlightdata.php";
-//System.out.println("insert data url--"+url);
-//URL urlObj = new URL(url);
-//String result = "";
-//String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
-//String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
-//String data2 =  " "+URLEncoder.encode(ManageDB.lightModeUpStair, "UTF-8");
-//String data3 =  " "+URLEncoder.encode(ManageDB.lightModeMainFloor, "UTF-8");
-//String data4 =  " "+URLEncoder.encode(Integer.toString(ManageDB.energy_consumed_US), "UTF-8");
-//String data5 =  " "+URLEncoder.encode(Integer.toString(ManageDB.energy_consumed_MF), "UTF-8");
-//String data6 =  " "+URLEncoder.encode(Integer.toString(ManageDB.brightnessUpStair), "UTF-8");
-//String data7 = " "+URLEncoder.encode(Integer.toString(ManageDB.brightnessMainFloor), "UTF-8");
-//
-//
-//HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-//conn.setDoInput(true);
-//conn.setDoOutput(true);
-//conn.setUseCaches(false);
-//conn.setRequestMethod("POST");
-//
-//DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
-//dataOut.writeBytes(data);
-//dataOut.writeBytes(data1);
-//dataOut.writeBytes(data2);
-//dataOut.writeBytes(data3);
-//dataOut.writeBytes(data4);
-//dataOut.writeBytes(data5);
-//dataOut.writeBytes(data6);
-//dataOut.writeBytes(data7);
-//
-//dataOut.flush();
-//dataOut.close();
-//DataInputStream in = new DataInputStream(conn.getInputStream());
-//String g;
-//while((g = in.readLine()) != null){
-//	result += g;
-//}
-//in.close();
-//System.out.println(result);
-//
-
-			
-			}
+	
+					}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-//inserting data in thermostat table
+
 public static void insertThermostatData(){
 		try
 		{
@@ -66,13 +23,13 @@ public static void insertThermostatData(){
 		//	thread.sleep(5000);
 			
 //System.out.println("thermostat insert");
-//String url = "http://"+ManageDB.ip+"/insertThermostat.php";
-//URL urlObj = new URL(url);
+String url = "http://"+ManageDB.ip+"/insertThermostat.php";
+URL urlObj = new URL(url);
 //String result = "";
 //System.out.println("values for thermostat---\n");
 //System.out.println(ManageDB.currentDate.get(0));
 //
-//String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
+String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
 //String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
 //String data2 =  " "+URLEncoder.encode(ManageDB.tempModeUp.get(0), "UTF-8");
 //String data3 =  " "+URLEncoder.encode(ManageDB.tempModeMain.get(0), "UTF-8");
@@ -123,10 +80,10 @@ public static void insertThermostatData(){
 	
 	public static void test(){
 		try{
-			System.out.println("inside test");
+		//	System.out.println("inside test");
 			//	thread.sleep(5000);
 				
-	System.out.println("BEFORE CONNECTION");
+	//System.out.println("BEFORE CONNECTION");
 	String url = "http://"+ManageDB.ip+"/fetchEner.php";
 	URL urlObj = new URL(url);
 	String result = "";
@@ -148,7 +105,7 @@ public static void insertThermostatData(){
 		result += g;
 	}
 	in.close();
-	System.out.println(result);
+//	System.out.println(result);
 
 	
 				
@@ -163,7 +120,7 @@ public static void insertSecurity(){
 		//	String insertVal =	Server.insertSecData(4003);	
 		//	thread.sleep(5000);
 			
-System.out.println("security insert");
+//System.out.println("security insert");
 //String url = "http://"+ManageDB.ip+"/insertSecurity.php";
 //URL urlObj = new URL(url);
 //String result = "";
@@ -209,11 +166,11 @@ public static void insertLocks(){
 		
 	//	thread.sleep(5000);
 		
-System.out.println("Locks insert");
+//System.out.println("Locks insert");
 String url = "http://"+ManageDB.ip+"/insertLocks.php";
 URL urlObj = new URL(url);
 String result = "";
-System.out.println(ManageDB.currentDate.get(0));
+//System.out.println(ManageDB.currentDate.get(0));
 
 String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
 String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
@@ -243,7 +200,7 @@ while((g = in.readLine()) != null){
 result += g;
 }
 in.close();
-System.out.println(result);
+//System.out.println(result);
 
 
 		
@@ -260,11 +217,11 @@ public static void insertDoorSensor(){
 		
 	//	thread.sleep(5000);
 		
-System.out.println("Door Sensors insert");
+//System.out.println("Door Sensors insert");
 String url = "http://"+ManageDB.ip+"/insertDoorSensors.php";
 URL urlObj = new URL(url);
 String result = "";
-System.out.println(ManageDB.currentDate.get(0));
+//System.out.println(ManageDB.currentDate.get(0));
 
 String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
 String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
@@ -294,7 +251,7 @@ while((g = in.readLine()) != null){
 result += g;
 }
 in.close();
-System.out.println(result);
+//System.out.println(result);
 
 
 		
@@ -311,11 +268,11 @@ try
 	
 //	thread.sleep(5000);
 	
-System.out.println("Motion Sensors insert");
+//System.out.println("Motion Sensors insert");
 String url = "http://"+ManageDB.ip+"/insertMotionSensors.php";
 URL urlObj = new URL(url);
 String result = "";
-System.out.println(ManageDB.currentDate.get(0));
+//System.out.println(ManageDB.currentDate.get(0));
 
 String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
 String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
@@ -345,7 +302,7 @@ while((g = in.readLine()) != null){
 result += g;
 }
 in.close();
-System.out.println(result);
+//System.out.println(result);
 
 
 	
@@ -362,11 +319,11 @@ try
 	
 //	thread.sleep(5000);
 	
-System.out.println("weather data  insert");
+//System.out.println("weather data  insert");
 String url = "http://"+ManageDB.ip+"/weatherInsert.php";
 URL urlObj = new URL(url);
 String result = "";
-System.out.println(ManageDB.currentDate.get(0));
+//System.out.println(ManageDB.currentDate.get(0));
 
 String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
 String data1 = " "  +URLEncoder.encode(ManageDB.currentDate.get(0), "UTF-8");
@@ -396,7 +353,7 @@ while((g = in.readLine()) != null){
 result += g;
 }
 in.close();
-System.out.println(result);
+//System.out.println(result);
 
 
 	
