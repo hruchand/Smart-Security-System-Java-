@@ -9,7 +9,8 @@ public class InsertData {
 	public static void insertLightData(){
 		try
 		{
-	
+			String url = "http://"+ManageDB.ip+"/insertThermostat.php";
+			URL urlObj = new URL(url);	
 					}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

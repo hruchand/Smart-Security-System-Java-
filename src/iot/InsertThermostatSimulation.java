@@ -14,11 +14,13 @@ public class InsertThermostatSimulation implements Runnable{
 			
 		try{
 			
-			Thread.sleep(5000); 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
+		//	Thread.sleep(120000); 
+		System.out.println("inside sim");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());
-		Server.insertThermostatData(4001, time);
+		Server.insertThermostatData(2100, time);
+		Thread.sleep(120000); 
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

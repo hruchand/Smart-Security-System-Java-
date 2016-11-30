@@ -3,6 +3,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class FetchData {
 static	String str="null";
@@ -19,55 +23,105 @@ returnedValue = Client.fetchValues(3001);
 	 numbersArray = returnedValue.split(" ");
 //	 System.out.println("first val"+numbersArray[0]);
 //	 System.out.println("second val"+numbersArray[1]);
-	  ManageDB.curTempMain = numbersArray[1];
-      ManageDB.curTempUp = numbersArray[0];
-      ManageDB.tempModeUp = numbersArray[2];
-      ManageDB.tempModeMain = numbersArray[3];
-    //  System.out.println("Index 3 "+ManageDB.tempModeMain);
-      
-      
+	
+//	 ManageDB.cId = numbersArray[0];
+//	 ManageDB.curtime = numbersArray[1];
+	 ManageDB.curTempUp = numbersArray[0];
+	 ManageDB.curTempMain = numbersArray[1];
+	 ManageDB.tempModeUp = numbersArray[2];
+	 ManageDB.tempModeMain = numbersArray[3];
+	 System.out.println(numbersArray[2]);
+//	 ManageDB.tempEnergyUp = numbersArray[4];
+//	 ManageDB.tempEnergyMain = numbersArray[5];
+	
+//	ManageDB.controlTempUpstair = Integer.parseInt(numbersArray[8]);
+//	ManageDB.controlTempMainFloor = Integer.parseInt(numbersArray[9]);
+/*
+	System.out.println("current  temp:"+ ManageDB.curTempUp);
+	
+	String url = "http://10.0.0.2/insertThermostat.php";
+	System.out.println("after remote access");
+	URL urlObj = new URL(url);
+	String result = "";
+	
+	String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
+	System.out.println("after value insert 0");
+	String data1 = " "  +URLEncoder.encode(ManageDB.curtime, "UTF-8");
+	System.out.println("after value insert 1");
+	String data2 =  " "+URLEncoder.encode(ManageDB.tempModeUp, "UTF-8");
+	System.out.println("after value insert 2");
+	String data3 =  " "+URLEncoder.encode(ManageDB.tempModeMain, "UTF-8");
+	System.out.println("after value insert 3");
+	String data4 =  " "+URLEncoder.encode(ManageDB.tempEnergyUp, "UTF-8");
+	System.out.println("after value insert 4");
+	String data5 =  " "+URLEncoder.encode(ManageDB.tempEnergyMain, "UTF-8");
+	System.out.println("after value insert 5");
+	String data6 =  " "+URLEncoder.encode(ManageDB.curTempUp, "UTF-8");
+	System.out.println("after value insert 6");
+	String data7 = " "+URLEncoder.encode(ManageDB.curTempMain, "UTF-8");
+	System.out.println("after value insert 7");
+	String data8 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempMainFloor), "UTF-8");
+	System.out.println("after value insert 8");
+	String data9 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempUpstair), "UTF-8");
+	System.out.println("after value insert 9");
 	
 
+	
+	HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+	conn.setDoInput(true);
+	conn.setDoOutput(true);
+	conn.setUseCaches(false);
+	conn.setRequestMethod("POST");
+	
+	DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
+	dataOut.writeBytes(data);
+	dataOut.writeBytes(data1);
+	dataOut.writeBytes(data2);
+	dataOut.writeBytes(data3);
+	dataOut.writeBytes(data4);
+	dataOut.writeBytes(data5);
+	dataOut.writeBytes(data6);
+	dataOut.writeBytes(data7);
+	dataOut.writeBytes(data8);
+	dataOut.writeBytes(data9);
+	
+	dataOut.flush();
+	dataOut.close();
+	DataInputStream in = new DataInputStream(conn.getInputStream());
+	String g;
+	while((g = in.readLine()) != null){
+		result += g;
+	}
+	in.close();
+	System.out.println("final insert");
+	System.out.println(result);
+	//
+	
+//	System.out.println("energy up"+ManageDB.tempEnergyUp);
+//	System.out.println("energy main"+ManageDB.tempEnergyMain);
+
+/*			while (true) {
+		Socket socket = listener.accept();
 
 
-//System.out.println("socket returned value \n");
-//System.out.println(returnedValue);
-//            int temp_curr;
-//            String cId = "1";
-//            String url = "http://"+ManageDB.ip+"/fetchTher.php";
-//            URL urlObj = new URL(url);
-//            String result = "";
-//            String data = "cId=" + java.net.URLEncoder.encode(cId, "UTF-8");
-//            //1
-//            HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-//            conn.setDoInput(true);
-//            conn.setDoOutput(true);
-//            conn.setUseCaches(false);
-//            conn.setRequestMethod("POST");
-//            //2
-//            DataOutputStream dataOut = new DataOutputStream(conn.getOutputStream());
-//            dataOut.writeBytes(data);
-//            //3
-//            dataOut.flush();
-//            dataOut.close();
-//            DataInputStream in = new DataInputStream(conn.getInputStream());
-//
-//            String g;
-//            while((g = in.readLine()) != null){
-//
-//                result += g;
-//
-//            }
-//           System.out.println("inside thermostat fetch data");
-//
-//            in.close();
-//           
-//            String[] numbersArray = result.split(" ");
-          
-//
-//
-//
-//
+
+		String value = ManageDB.cId +" "+ time +" "+ManageDB.tempModeUp+" "+ManageDB.tempModeMain+" "+ManageDB.tempEnergyUp
+				+" "+ManageDB.tempEnergyMain+" "+ManageDB.currentTempUp+" "+ManageDB.currentTempMain+" "+Integer.toString(ManageDB.controlTempMainFloor)
+				+" "+Integer.toString(ManageDB.controlTempUpstair);
+		PrintWriter out =
+				new PrintWriter(socket.getOutputStream(), true);
+		out.println(value);
+		//Thread.sleep(1000);
+		out.flush();
+		out.close();
+		socket.close();
+		listener.close();
+      
+	
+insertlocaldata();
+
+
+
         }
         catch (Exception e){
            // Log.d("fetchdata",e.getMessage());
@@ -75,6 +129,97 @@ returnedValue = Client.fetchValues(3001);
         }
     
     }
+	
+	
+	public static void insertlocaldata() throws Exception {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		 String time = dateFormat.format(cal.getTime());
+		try {
+			
+			ManageDB.tempModeUp = ThermostatUpstair.getMode();
+			ManageDB.tempModeMain = Thermostat.getMode();
+			ManageDB.tempEnergyUp = Integer.toString(ThermostatUpstair.getEnergyConsumed()) ;
+			ManageDB.tempEnergyMain = Integer.toString(Thermostat.getEnergyConsumed()) ;
+			ManageDB.currentTempUp =Integer.toString(ThermostatUpstair.getCurrentTemperature());
+			ManageDB.currentTempMain = Integer.toString(Thermostat.getCurrentTemperature());
+			String url = "http://"+ManageDB.ip+"/insertThermostat.php";
+			URL urlObj = new URL(url);
+			String result = "";
+			
+			String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
+			String data1 = " "  +URLEncoder.encode(time, "UTF-8");
+			String data2 =  " "+URLEncoder.encode(ManageDB.tempModeUp, "UTF-8");
+			String data3 =  " "+URLEncoder.encode(ManageDB.tempModeMain, "UTF-8");
+			String data4 =  " "+URLEncoder.encode(ManageDB.tempEnergyUp, "UTF-8");
+			String data5 =  " "+URLEncoder.encode(ManageDB.tempEnergyMain, "UTF-8");
+			String data6 =  " "+URLEncoder.encode(ManageDB.currentTempUp, "UTF-8");
+			String data7 = " "+URLEncoder.encode(ManageDB.currentTempMain, "UTF-8");
+			String data8 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempMainFloor), "UTF-8");
+			String data9 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempUpstair), "UTF-8");
+			
+		
+			
+			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("POST");
+			
+			DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
+			dataOut.writeBytes(data);
+			dataOut.writeBytes(data1);
+			dataOut.writeBytes(data2);
+			dataOut.writeBytes(data3);
+			dataOut.writeBytes(data4);
+			dataOut.writeBytes(data5);
+			dataOut.writeBytes(data6);
+			dataOut.writeBytes(data7);
+			dataOut.writeBytes(data8);
+			dataOut.writeBytes(data9);
+			
+			dataOut.flush();
+			dataOut.close();
+			DataInputStream in = new DataInputStream(conn.getInputStream());
+			String g;
+			while((g = in.readLine()) != null){
+				result += g;
+			}
+			in.close();
+			//System.out.println(result);
+			//
+			
+		//	System.out.println("energy up"+ManageDB.tempEnergyUp);
+		//	System.out.println("energy main"+ManageDB.tempEnergyMain);
+
+/*			while (true) {
+				Socket socket = listener.accept();
+
+
+
+				String value = ManageDB.cId +" "+ time +" "+ManageDB.tempModeUp+" "+ManageDB.tempModeMain+" "+ManageDB.tempEnergyUp
+						+" "+ManageDB.tempEnergyMain+" "+ManageDB.currentTempUp+" "+ManageDB.currentTempMain+" "+Integer.toString(ManageDB.controlTempMainFloor)
+						+" "+Integer.toString(ManageDB.controlTempUpstair);
+				PrintWriter out =
+						new PrintWriter(socket.getOutputStream(), true);
+				out.println(value);
+				//Thread.sleep(1000);
+				out.flush();
+				out.close();
+				socket.close();
+				listener.close();
+
+			}
+			*/
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		} 
+
+
+	}
+	
 	
 	public static void fetchlightData() {
         try {
@@ -120,6 +265,7 @@ returnedValue = Client.fetchValues(3001);
       //      String[] numbersArray = result.split(" ");
            LightUpstair.setBrightness(Integer.parseInt(numbersArray[0]));
            LightMainFloor.setBrightness(Integer.parseInt(numbersArray[1]));
+           System.out.println(numbersArray[0]);
            //ManageDB.lightModeMainFloor        = numbersArray[1];
 LightUpstair.setLightStatus(numbersArray[2])  ;
 LightMainFloor.setLightStatus(numbersArray[3]);
@@ -206,7 +352,8 @@ LightMainFloor.setLightStatus(numbersArray[3]);
         	String [] numbersArray = returnedValue.split(" ");
             ManageDB.twoDoorStatus = numbersArray[0];
             ManageDB.oneDoorStatus = numbersArray[1]; 
-     
+ //    System.out.println("two door fetch stat"+ManageDB.twoDoorStatus);
+  //   System.out.println("two door fetch stat"+ManageDB.oneDoorStatus);
         } catch (Exception e) {
           e.printStackTrace();
         }

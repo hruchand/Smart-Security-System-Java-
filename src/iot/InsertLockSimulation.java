@@ -13,11 +13,12 @@ public class InsertLockSimulation implements Runnable{
 		{
 			
 		try{
-			Thread.sleep(10000); 
+			
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());
 		Server.insertLockData(4004, time);
+		Thread.sleep(120000); 
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

@@ -13,11 +13,12 @@ public class InsertSecSimulation implements Runnable{
 		{
 			
 		try{
-			Thread.sleep(10000); 
+			 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());
 		Server.insertSecData(4003, time);
+		Thread.sleep(120000);
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

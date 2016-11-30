@@ -9,7 +9,8 @@ public class Client {
 static	String str = null;
 	public static String fetchValues(int port)
 	{
-	
+//	System.out.println("ip is:"+ManageDB.ip);
+//	System.out.println("ip is:"+port);
 		String ServerIP = ManageDB.ip;
 		int ServerPort = port;		   	
 //	System.out.println("port number"+port);
@@ -19,7 +20,9 @@ static	String str = null;
 			Thread.sleep(1000);
 		//	System.out.println("before connecting");
 		//	System.out.println("ip is:-"+ServerIP);
+//		System.out.println("before");
 			Socket clientSocket = new Socket(ServerIP,ServerPort);
+//			System.out.println("after");
 		//	System.out.println("socket created"+clientSocket.getLocalPort());
 
 			in = new BufferedReader(

@@ -47,7 +47,7 @@ public class Thermostat extends RPI1{
 		System.out.println("before the cons");
 	this.controlTemperature= controlTemp;
 	this.mode=mode;
-System.out.println("inside the constructor");
+//System.out.println("inside the constructor");
 	
 	}
 	

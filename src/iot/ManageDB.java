@@ -2,6 +2,7 @@ package iot;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 //import org.apache.http.HttpEntity;
@@ -38,9 +40,9 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class ManageDB {
-	static String ip="10.0.0.3";
+	static String ip = "10.0.0.3";
 	static	String url222 = "http://"+ip+"/iot.php";
-
+static String curtime;
 	static	String cId ="1";
 	static	String currentTempUp;
 	static	String currentTempMain;
@@ -73,14 +75,29 @@ public class ManageDB {
 	static String fanModeMainFloor;
 	static String thermoStatModeUpstair;
 	static String fanModeUpstair;
+	static String raspberryPiIp;
+	static String raspberryPiRole = "sensor";
 
 	static int brightnessUpStair;
 
 	public static void main(String args[]){
 		try{
+	
+			ManageDB.getIpAndRole();
+		    Broadcast broadcast = new Broadcast();
+		    Thread.sleep(5000);
+			AckReceived ackReceived = new AckReceived();
+			FetchData.fetchCurTemp();
+			FetchData.fetchlightData();
+			FetchData.fetchSecurityData();
+			FetchData.fetchLockData();
+			FetchData.fetchDoorSensorData();
 			
-System.out.println("hello");
-	//		EventTriggerPi eventTriggerPi = new EventTriggerPi();
+			FetchData.fetchMotionSensorData();
+			FetchData.fetchGarageDoorStatus();
+			Thread.sleep(5000);
+//System.out.println("hello");
+		//	EventTriggerPi eventTriggerPi = new EventTriggerPi();
 
 			System.out.println("Set  Control Temp for MainFloor(int)\n");	
 			while(true)
@@ -88,7 +105,7 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					controlTempMainFloor = scanner.nextInt();
+					ManageDB.controlTempMainFloor = scanner.nextInt();
 					break;
 				}
 			}
@@ -99,7 +116,7 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					thermoStatModeMainFloor = scanner.nextLine();
+					ManageDB.thermoStatModeMainFloor = scanner.nextLine();
 					break;
 				}
 			}
@@ -111,7 +128,7 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					fanModeMainFloor = scanner.nextLine();
+					ManageDB.fanModeMainFloor = scanner.nextLine();
 					break;
 				}
 			}
@@ -121,7 +138,7 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					controlTempUpstair = scanner.nextInt();
+					ManageDB.controlTempUpstair = scanner.nextInt();
 					break;
 				}
 			}
@@ -132,7 +149,7 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					thermoStatModeUpstair = scanner.nextLine();
+					ManageDB.thermoStatModeUpstair = scanner.nextLine();
 					break;
 				}
 			}
@@ -143,20 +160,22 @@ System.out.println("hello");
 				Scanner scanner = new Scanner(System.in);
 				if(scanner.hasNext())
 				{
-					fanModeUpstair = scanner.nextLine();
+					ManageDB.fanModeUpstair = scanner.nextLine();
 					break;
 				}
 			}
-			Thermostat thermostat = new Thermostat(controlTempMainFloor, thermoStatModeMainFloor);
+		System.out.println("control temp:-"+ManageDB.controlTempMainFloor);
+		System.out.println("therm mode:-"+ManageDB.thermoStatModeMainFloor);
+			Thermostat thermostat = new Thermostat(ManageDB.controlTempMainFloor, ManageDB.thermoStatModeMainFloor);
 			SimulationThreadThermostat simulationThreadThermostat = new SimulationThreadThermostat();
-			String fanStatusMainfloor = thermostat.fan(fanModeMainFloor);
+			String fanStatusMainfloor = thermostat.fan(ManageDB.fanModeMainFloor);
 
-			ThermostatUpstair thermostatUpstair = new ThermostatUpstair(controlTempUpstair, thermoStatModeUpstair);
+			ThermostatUpstair thermostatUpstair = new ThermostatUpstair(ManageDB.controlTempUpstair, ManageDB.thermoStatModeUpstair);
 			SimulationThreadThermostatUpstair simulationThreadThermostatUpstair = new SimulationThreadThermostatUpstair();
-			String fanStatusUpstair = thermostatUpstair.fan(fanModeUpstair);
+			String fanStatusUpstair = thermostatUpstair.fan(ManageDB.fanModeUpstair);
 
 			InsertThermostatSimulation insertThermostatSimulation = new InsertThermostatSimulation();
-/*
+
 
 			System.out.println("Set Light Mode for Main Floor(on/off)");
 			while(true)
@@ -309,8 +328,11 @@ System.out.println("hello");
 					break;
 				}
 			}
+			GarrageDoors garrageDoors =new GarrageDoors();
+			garrageDoors.setTwodoor_status(twoDoorStatus);
+			garrageDoors.setOnedoor_status(oneDoorStatus);
 			InsertGarageDoorSimulation insertGarageDoorSimulation = new InsertGarageDoorSimulation();
-
+			
 			System.out.println("Enter the motion sensor main staus: (active/inactive)");
 			while(true)
 			{
@@ -339,7 +361,7 @@ System.out.println("hello");
 			mu.setMotion_detector_status(motion_sensor_up);
 			mm.setMotion_detector_status(motion_sensor_main);
 			InsertMotionSensorSimulation insertMotionSensorSimulation = new InsertMotionSensorSimulation();
-
+/*
 			//		InsertWeatherSimulation insertWeatherSimulation = new InsertWeatherSimulation();
 */
 		}catch (Exception e) {
@@ -380,4 +402,48 @@ System.out.println("hello");
 		}
 	}
 
+	public static void getIpAndRole()
+	{
+		try{
+			String ip;
+			String 	roles;
+			BufferedReader		br = new BufferedReader(new FileReader("//home//pi//Desktop//ip.txt"));
+			BufferedReader br1 = 		new BufferedReader(new FileReader("//home//pi//Desktop//sys_names.txt"));
+	//		BufferedReader		br = new BufferedReader(new FileReader("C:\\Users\\siddhartha\\Desktop\\ip.txt"));
+	//		BufferedReader br1 = 		new BufferedReader(new FileReader("C:\\Users\\siddhartha\\Desktop\\roles.txt"));
+		HashMap<String, String>  map= new HashMap<>();
+		ArrayList<String> list = new ArrayList<>();
+					while ((ip = br.readLine()) != null) {
+					  System.out.println(ip);
+					  map.put(ip, br1.readLine());
+					  list.add(ip);
+					  
+					}
+				int size = list.size();
+				ManageDB.raspberryPiIp = list.get(size-1);
+				System.out.println("the ip of rasp:-"+ManageDB.raspberryPiIp);
+	
+				
+				/*
+				for(int i = 0; i <list.size(); i++)
+			{
+				String role = map.get(list.get(i));
+
+			//	System.out.println("ip value :-"+role);
+				if(role.equalsIgnoreCase("(Hon Hai Precision Ind.)")){
+					ip = list.get(i);
+					System.out.println("it matches:-"+ip);
+					ManageDB.raspberryPiIp = ip;
+					ManageDB.raspberryPiRole = role;
+		System.out.println("rasp ip:-"+ManageDB.raspberryPiIp);
+		System.out.println("rasp role:-"+ManageDB.raspberryPiRole);
+				}
+			}
+		*/	
+					
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
