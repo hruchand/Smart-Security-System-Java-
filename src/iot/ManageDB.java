@@ -83,10 +83,12 @@ static String curtime;
 	public static void main(String args[]){
 		try{
 	
-			ManageDB.getIpAndRole();
-		    Broadcast broadcast = new Broadcast();
-		    Thread.sleep(5000);
-			AckReceived ackReceived = new AckReceived();
+			//ManageDB.getIpAndRole();
+		 //   Broadcast broadcast = new Broadcast();
+		   ListenThread listenThread = new ListenThread();
+			Thread.sleep(5000);
+		//	WriteAck writeAck = new WriteAck();
+	//		AckReceived ackReceived = new AckReceived();
 			FetchData.fetchCurTemp();
 			FetchData.fetchlightData();
 			FetchData.fetchSecurityData();
