@@ -11,7 +11,7 @@ static	String str = null;
 	{
 //	System.out.println("ip is:"+ManageDB.ip);
 //	System.out.println("ip is:"+port);
-		String ServerIP = ManageDB.ip;
+	//	String ServerIP = ManageDB.ip;
 		int ServerPort = port;		   	
 //	System.out.println("port number"+port);
 		BufferedReader in = null;
@@ -21,7 +21,8 @@ static	String str = null;
 		//	System.out.println("before connecting");
 		//	System.out.println("ip is:-"+ServerIP);
 //		System.out.println("before");
-			Socket clientSocket = new Socket(ServerIP,ServerPort);
+		//	Socket clientSocket = new Socket(ManageDB.serverIp,ServerPort);
+			Socket clientSocket = new Socket(ManageDB.ip,ServerPort);
 //			System.out.println("after");
 		//	System.out.println("socket created"+clientSocket.getLocalPort());
 

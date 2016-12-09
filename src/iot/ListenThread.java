@@ -75,7 +75,7 @@ a++;
 	//status = true;
 	socket.close();
 	listener.close();
-System.out.println("before break while");
+//System.out.println("before break while");
 	break;
 	
 	}
@@ -83,11 +83,17 @@ System.out.println("before break while");
 
 
 				}
+//System.out.println(receivedNodesMap.size());
 for(int i = 0; i< receivedNodesMap.size(); i++){
 	System.out.println(receivedNodesMap.get(i).ip);
 	System.out.println(receivedNodesMap.get(i).sysName);
 	System.out.println(receivedNodesMap.get(i).macAddress);
 	System.out.println(receivedNodesMap.get(i).role);
+if(receivedNodesMap.get(i).role.equalsIgnoreCase("server")){
+ManageDB.serverIp = receivedNodesMap.get(i).ip;
+ManageDB.ip = receivedNodesMap.get(i).ip;;
+//notifyAll();
+}
 }
 //			System.out.println("role is"+nmapClass.map.get(numbersArray[0]));		
 			}
@@ -95,5 +101,6 @@ for(int i = 0; i< receivedNodesMap.size(); i++){
 			System.out.println(e.getMessage());
 		}
 	//	}
+
 	}
 }

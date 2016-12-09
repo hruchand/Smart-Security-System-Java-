@@ -18,8 +18,8 @@ public class InsertLightSimulation implements Runnable{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());
-		Server.insertLightData(4002, time);
-		Thread.sleep(120000);
+		Server.insertLightData(4002);
+	//	Thread.sleep(10000);
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

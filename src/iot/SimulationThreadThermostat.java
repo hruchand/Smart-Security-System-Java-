@@ -38,10 +38,12 @@ public class SimulationThreadThermostat implements Runnable {
 						Thermostat.setCurrentTemperature(Thermostat.getCurrentTemperature()-1);
 			//			System.out.println("\nCurrent Temperature of Main Floor:"+Thermostat.getCurrentTemperature());
 			//			System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));
+						Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature());
 					}
 					else
 					{
 			//			System.out.println("\nCurrent energy consumption of Main Floor:"+Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature()));	
+						Thermostat.EnergyConsumption(Thermostat.getCurrentTemperature());
 					}
 					break;
 

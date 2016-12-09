@@ -24,6 +24,7 @@ Thread thread = new Thread(this);
               //          System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
                    //     SetData.setThermDataup(5002);
                 //        System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
+                        ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature());
                     }
                     break;
 
@@ -35,7 +36,8 @@ Thread thread = new Thread(this);
       //                  System.out.println("\nCurrent Temperature of Upstair:"+ThermostatUpstair.getCurrentTemperature());
                    //     SetData.setThermDataup(5002);
         //                System.out.println("\nCurrent energy consumption of Upstair:"+ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature()));
-                        }
+                        ThermostatUpstair.EnergyConsumption(ThermostatUpstair.getCurrentTemperature());
+                    }
                 break;
                 default:
                 break;

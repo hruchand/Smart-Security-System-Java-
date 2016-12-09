@@ -17,8 +17,8 @@ public class InsertGarageDoorSimulation implements Runnable{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String time = dateFormat.format(cal.getTime());
-		Server.insertGarageDoorData(4008, time);
-		Thread.sleep(120000); 
+		Server.insertGarageDoorData(4008);
+		//Thread.sleep(10000); 
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

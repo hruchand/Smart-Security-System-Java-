@@ -40,7 +40,8 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class ManageDB {
-	static String ip = "10.0.0.3";
+	static String ip;
+	static String serverIp;
 	static	String url222 = "http://"+ip+"/iot.php";
 static String curtime;
 	static	String cId ="1";
@@ -86,8 +87,9 @@ static String curtime;
 			//ManageDB.getIpAndRole();
 		 //   Broadcast broadcast = new Broadcast();
 		   ListenThread listenThread = new ListenThread();
-			Thread.sleep(5000);
-		//	WriteAck writeAck = new WriteAck();
+			Thread.sleep(20000);
+			WriteAck writeAck = new WriteAck();
+			
 	//		AckReceived ackReceived = new AckReceived();
 			FetchData.fetchCurTemp();
 			FetchData.fetchlightData();
@@ -99,7 +101,7 @@ static String curtime;
 			FetchData.fetchGarageDoorStatus();
 			Thread.sleep(5000);
 //System.out.println("hello");
-		//	EventTriggerPi eventTriggerPi = new EventTriggerPi();
+			EventTriggerPi eventTriggerPi = new EventTriggerPi();
 
 			System.out.println("Set  Control Temp for MainFloor(int)\n");	
 			while(true)
@@ -175,7 +177,7 @@ static String curtime;
 			ThermostatUpstair thermostatUpstair = new ThermostatUpstair(ManageDB.controlTempUpstair, ManageDB.thermoStatModeUpstair);
 			SimulationThreadThermostatUpstair simulationThreadThermostatUpstair = new SimulationThreadThermostatUpstair();
 			String fanStatusUpstair = thermostatUpstair.fan(ManageDB.fanModeUpstair);
-
+System.out.println("calling tehmostat insert sim thread");
 			InsertThermostatSimulation insertThermostatSimulation = new InsertThermostatSimulation();
 
 

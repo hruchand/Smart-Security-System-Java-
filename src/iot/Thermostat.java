@@ -65,7 +65,7 @@ public class Thermostat extends RPI1{
 	
 	public static double EnergyConsumption(int curr_temp){
 		energyConsumed = (int)(curr_temp * energy_rate);
-		 System.out.println("calculated energy main floor-"+energyConsumed);
+	//	 System.out.println("calculated energy main floor-"+energyConsumed);
         return energyConsumed;	 
 	}
 }

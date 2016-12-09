@@ -10,13 +10,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 public class Server {
 
-	public static void insertThermostatData(int port, String time) throws Exception {
+	
+	public static String getTime(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String time = dateFormat.format(cal.getTime());
+		return time;
+	}
+	public static void insertThermostatData(int port) throws Exception {
 	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
-		
+		String time;
 		try {
 			
 			ManageDB.tempModeUp = ThermostatUpstair.getMode();
@@ -26,90 +37,25 @@ public class Server {
 			ManageDB.currentTempUp =Integer.toString(ThermostatUpstair.getCurrentTemperature());
 			ManageDB.currentTempMain = Integer.toString(Thermostat.getCurrentTemperature());
 
-//			ManageDB.cId = "1";
-//			String time1 = time;
-//			ManageDB.tempModeUp = "heat";
-//			ManageDB.tempModeMain = "cool";
-//			ManageDB.tempEnergyUp = "54" ;
-//			ManageDB.tempEnergyMain = "56" ;
-//			ManageDB.currentTempUp ="55";
-//			ManageDB.currentTempMain = "55";
-//			ManageDB.controlTempMainFloor =66;
-//			ManageDB.controlTempUpstair=88;
-		/*
-			String url = "http://"+ManageDB.ip+"/insertThermostat.php";
-			URL urlObj = new URL(url);
-			String result = "";
-			String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
-			String data1 = " "  +URLEncoder.encode(time, "UTF-8");
-			String data2 =  " "+URLEncoder.encode(ManageDB.tempModeUp, "UTF-8");
-			String data3 =  " "+URLEncoder.encode(ManageDB.tempModeMain, "UTF-8");
-			String data4 =  " "+URLEncoder.encode(ManageDB.tempEnergyUp, "UTF-8");
-			String data5 =  " "+URLEncoder.encode(ManageDB.tempEnergyMain, "UTF-8");
-			String data6 =  " "+URLEncoder.encode(ManageDB.currentTempUp, "UTF-8");
-			String data7 = " "+URLEncoder.encode(ManageDB.currentTempMain, "UTF-8");
-			String data8 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempMainFloor), "UTF-8");
-			String data9 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempUpstair), "UTF-8");
-			
-		
-			
-			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-			conn.setDoInput(true);
-			conn.setDoOutput(true);
-			conn.setUseCaches(false);
-			conn.setRequestMethod("POST");
-			
-			DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
-			dataOut.writeBytes(data);
-			dataOut.writeBytes(data1);
-			dataOut.writeBytes(data2);
-			dataOut.writeBytes(data3);
-			dataOut.writeBytes(data4);
-			dataOut.writeBytes(data5);
-			dataOut.writeBytes(data6);
-			dataOut.writeBytes(data7);
-			dataOut.writeBytes(data8);
-			dataOut.writeBytes(data9);
-			
-			dataOut.flush();
-			dataOut.close();
-			DataInputStream in = new DataInputStream(conn.getInputStream());
-			String g;
-			while((g = in.readLine()) != null){
-				result += g;
-			}
-			in.close();
-			//System.out.println(result);
-			//
-			
-		//	System.out.println("energy up"+ManageDB.tempEnergyUp);
-		//	System.out.println("energy main"+ManageDB.tempEnergyMain);
-*/
+
 			while (true) {
+				 time = getTime();
+				//System.out.println("before thermostat accept");
 				Socket socket = listener.accept();
-				
+				//System.out.println("after thermostat accept");
 				String value = ManageDB.cId +" "+ time +" "+ManageDB.tempModeUp+" "+ManageDB.tempModeMain+" "+ManageDB.tempEnergyUp
 						+" "+ManageDB.tempEnergyMain+" "+ManageDB.currentTempUp+" "+ManageDB.currentTempMain+" "+Integer.toString(ManageDB.controlTempMainFloor)
 						+" "+Integer.toString(ManageDB.controlTempUpstair);
 				PrintWriter out =
 						new PrintWriter(socket.getOutputStream(), true);
 				
-	System.out.println("reached output print");
+	//System.out.println("reached output print");
 				out.println(value);
 				
 				//Thread.sleep(1000);
 				out.flush();
 				out.close();
-				ServerSocket listener1 = new ServerSocket(2501);
-				listener1.setReuseAddress(true);
-
-				Socket socket1 = listener1.accept();
-				PrintWriter out1 = new PrintWriter(socket1.getOutputStream(), true);
-				out1.println(value);
-				out1.flush();
-				out1.close();
-			//	socket.close();
-			//	listener.close();
+			//socket.close();
 						}
 			
 		}
@@ -118,13 +64,14 @@ public class Server {
 		} 
 	}
 
-	public static void insertLightData(int port, String time) throws Exception {
+	public static void insertLightData(int port) throws Exception {
 		try {
 /*
 			String url = "http://"+ManageDB.ip+"/insertlightdata.php";
 		URL urlObj = new URL(url);	
 		String result = "";
 	*/	
+			String time;
 		LightMainFloor lightMainFloor = new LightMainFloor();
 		LightUpstair lightUpStair = new LightUpstair();
 		
@@ -143,50 +90,16 @@ public class Server {
 		}else{
 			
 		}
-	/*	
-		String data = "cId=" + URLEncoder.encode(ManageDB.cId, "UTF-8");
-		String data1 = " "  +URLEncoder.encode(time, "UTF-8");
-		String data2 =  " "+URLEncoder.encode(ManageDB.lightModeUpStair, "UTF-8");
-		String data3 =  " "+URLEncoder.encode(ManageDB.lightModeMainFloor, "UTF-8");
-		String data4 =  " "+URLEncoder.encode(Integer.toString(ManageDB.energy_consumed_US), "UTF-8");
-		String data5 =  " "+URLEncoder.encode(Integer.toString(ManageDB.energy_consumed_MF), "UTF-8");
-		String data6 =  " "+URLEncoder.encode(Integer.toString( ManageDB.brightnessUpStair), "UTF-8");
-		String data7 = " "+URLEncoder.encode(Integer.toString(ManageDB.brightnessMainFloor), "UTF-8");
-	//	String data8 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempMainFloor), "UTF-8");
-	//	String data9 = " "+URLEncoder.encode(Integer.toString(ManageDB.controlTempUpstair), "UTF-8");
-		
-		HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(true);
-		conn.setUseCaches(false);
-		conn.setRequestMethod("POST");
-		DataOutputStream  dataOut = new DataOutputStream(conn.getOutputStream());
-		dataOut.writeBytes(data);
-		dataOut.writeBytes(data1);
-		dataOut.writeBytes(data2);
-		dataOut.writeBytes(data3);
-		dataOut.writeBytes(data4);
-		dataOut.writeBytes(data5);
-		dataOut.writeBytes(data6);
-		dataOut.writeBytes(data7);
-		
-		dataOut.flush();
-		dataOut.close();
-		DataInputStream in = new DataInputStream(conn.getInputStream());
-		String g;
-		while((g = in.readLine()) != null){
-			result += g;
-		}
-		in.close();
-	//	System.out.println(result);
-	 */
+	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
 		while (true) {
-				Socket socket = listener.accept();
+			time = getTime();
+		//	System.out.println("befor accept");	
+			Socket socket = listener.accept();
 
-
+		//	System.out.println("after accept");	
 				String value = ManageDB.cId +" "+time+" "+ManageDB.lightModeUpStair+" "+ManageDB.lightModeMainFloor+" "+Integer.toString(ManageDB.energy_consumed_US)
 				+" "+Integer.toString(ManageDB.energy_consumed_MF)+" "+Integer.toString( ManageDB.brightnessUpStair)+" "+Integer.toString(ManageDB.brightnessMainFloor);
 				PrintWriter out =
@@ -207,7 +120,7 @@ public class Server {
 
 	}
 
-	public static void insertSecData(int port, String time) throws Exception {
+	public static void insertSecData(int port) throws Exception {
 	
 		/*
 		String url = "http://"+ManageDB.ip+"/insertSecurity.php";
@@ -222,6 +135,7 @@ public class Server {
 		listener.setReuseAddress(true);
 
 		try {
+			String time;
 /*
 			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
 			conn.setDoInput(true);
@@ -234,6 +148,7 @@ public class Server {
 			dataOut.writeBytes(data2);
 */
 			while (true) {
+			time = getTime();
 				Socket socket = listener.accept();
 				//try {
 					
@@ -257,13 +172,13 @@ public class Server {
 		} 
 	}
 
-	public static void insertLockData(int port, String time) throws Exception {
+	public static void insertLockData(int port) throws Exception {
 		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
 		try {
-
+String time;
 		/*	
 			String url = "http://"+ManageDB.ip+"/insertLocks.php";
 			URL urlObj = new URL(url);
@@ -299,6 +214,7 @@ public class Server {
 		//	System.out.println(result);
 		*/
 			while (true) {
+			time = getTime();
 				Socket socket = listener.accept();
 		//		try {
 
@@ -326,12 +242,13 @@ public class Server {
 
 	}
 
-	public static void insertDoorData(int port, String time) throws Exception {
+	public static void insertDoorData(int port) throws Exception {
 	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
 		try {
+			String time;
 /*
 			String url = "http://"+ManageDB.ip+"/insertDoorSensors.php";
 			URL urlObj = new URL(url);
@@ -380,6 +297,7 @@ public class Server {
 */			
 			
 			while (true) {
+		time = getTime();
 				Socket socket = listener.accept();
 				///try {
 
@@ -404,12 +322,13 @@ public class Server {
 
 
 	}
-	public static void insertMotionSensorData(int port, String time) throws Exception {
+	public static void insertMotionSensorData(int port) throws Exception {
 		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
 		try {
+			String time;
 	/*
 			String url = "http://"+ManageDB.ip+"/insertmotionSensors.php";
 			URL urlObj = new URL(url);
@@ -458,6 +377,7 @@ public class Server {
 	*/	
 			
 			while (true) {
+				time = getTime();
 				Socket socket = listener.accept();
 			//	try {
 
@@ -482,14 +402,15 @@ public class Server {
 
 
 	}
-	public static void insertWeatherData(int port, String time) throws Exception {
+	public static void insertWeatherData(int port) throws Exception {
 		
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 
 		try {
-
+String time;
 			while (true) {
+		time = getTime();
 				Socket socket = listener.accept();
 			//	try {
 
@@ -518,12 +439,13 @@ public class Server {
 
 
 
-	public static void insertGarageDoorData(int port, String time) throws Exception {
+	public static void insertGarageDoorData(int port) throws Exception {
 	
 		ServerSocket listener = new ServerSocket(port);
 		listener.setReuseAddress(true);
 	
 		try {
+			String time;
 	/*
 			String url = "http://"+ManageDB.ip+"/insertgarage.php";
 		URL urlObj = new URL(url);
@@ -559,6 +481,7 @@ public class Server {
 	//	System.out.println(result);
 */
 					while (true) {
+						time = getTime();
 				Socket socket = listener.accept();
 		//		try {
 

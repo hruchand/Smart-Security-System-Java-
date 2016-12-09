@@ -30,7 +30,7 @@ returnedValue = Client.fetchValues(3001);
 	 ManageDB.curTempMain = numbersArray[1];
 	 ManageDB.tempModeUp = numbersArray[2];
 	 ManageDB.tempModeMain = numbersArray[3];
-	 System.out.println(numbersArray[2]);
+//	 System.out.println(numbersArray[2]);
 //	 ManageDB.tempEnergyUp = numbersArray[4];
 //	 ManageDB.tempEnergyMain = numbersArray[5];
 	

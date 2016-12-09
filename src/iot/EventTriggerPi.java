@@ -13,7 +13,7 @@ public class EventTriggerPi implements Runnable{
 	public  void run()  {
 try{
 	
-
+System.out.println("after try");
 	//	System.out.println("<--Pi4J--> GPIO Listen Example ... started.");
 
         // create gpio controller
@@ -47,25 +47,30 @@ try{
         
            
    //Thread.sleep(1000);    
+      //  System.out.println("before event trigger while");
        while(true)
        {
+  //  	   System.out.println("after event trigger while");
     	   Thread.sleep(5000);
     	   
-    	   FetchData.fetchlightData();
-    	   FetchData.fetchLockData();
-    	   FetchData.fetchMotionSensorData();
-    	   FetchData.fetchSecurityData();
-    	   FetchData.fetchGarageDoorStatus();
     	   FetchData.fetchCurTemp();
-    	   FetchData.fetchDoorSensorData();
-    	   
+			FetchData.fetchlightData();
+			FetchData.fetchSecurityData();
+			FetchData.fetchLockData();
+			FetchData.fetchDoorSensorData();
+			
+			FetchData.fetchMotionSensorData();
+			FetchData.fetchGarageDoorStatus();
+    //	   System.out.println("after event trigger fetch");
        if(LightMainFloor.getLightStatus().equalsIgnoreCase("on"))
         {
+  //  	   System.out.println("light high");
         outputPin.setState(high);
         }
         else
         {
         outputPin.setState(low);
+    //    System.out.println("light low");
         }
        
         if(Locks.getFront_door_status().equalsIgnoreCase("Locked"))

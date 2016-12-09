@@ -20,6 +20,7 @@ public class WriteAck implements Runnable{
 	
 			
 		try{
+//wait();
 		//	BufferedReader in = null;
 		//	Thread.sleep(10000);
 		while(true){
@@ -27,7 +28,8 @@ public class WriteAck implements Runnable{
 			//{
 				//System.out.println("Inside if");
 	//		System.out.println(ListenThread.numbersArray[0]);
-				Socket clientSocket = new Socket("10.0.0.2", 6603);
+System.out.println("Server ip is "+ManageDB.serverIp);
+				Socket clientSocket = new Socket(ManageDB.serverIp, 6603);
 		        String ack = "ipReceived";
 				//	
 				PrintWriter out =
